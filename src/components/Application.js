@@ -3,7 +3,7 @@ import DayList from "./DayList";
 import { useState, useEffect } from "react";
 import Appointment from "components/Appointment";
 import axios from "axios";
-import { getAppointmentsForDay } from "components/helpers/selectors";
+import { getAppointmentsForDay, getInterview } from "components/helpers/selectors";
 
 import "components/Application.scss";
 
@@ -12,37 +12,48 @@ export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: {}
   });
-
-  let dailyAppointments = [];
 
   const setDay = day => setState({ ...state, day });
   // const setDays = (days) => {
   //   setState(prev => ({ ...prev, days }))
   // };
+
+
+  const appointments = getAppointmentsForDay(state, state.day);
+
+  const schedule = appointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
   
-  useEffect(() => {
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={interview}
+      />
+    );
+  });
+  
+useEffect(() => {
     Promise.all([
       axios.get('/api/days'),
       axios.get('/api/appointments'),
       axios.get('/api/interviewers')
     ]).then((response) => {
 
-      setState(prev => ({...prev, days: response[0].data, appointments: response[1].data}));
-
+      setState(prev => ({...prev, days: response[0].data, appointments: response[1].data, interviewers: response[2].data}));
     });
-  }, [])
+  }, []);
 
-  dailyAppointments = getAppointmentsForDay(state, state.day)
 
   // useEffect(() => {
   //   axios.get(`/api/appointments`).then(response => {
   //     setDays(response.data)
   //     })
   // }, [])
-
-  
 
   return (
     <main className="layout">
@@ -67,12 +78,7 @@ export default function Application(props) {
       />
       </section>
       <section className="schedule">
-      {dailyAppointments.map(appointment => (
-          <Appointment
-            key={appointment.id}
-            {...appointment}
-          />
-        ))}
+        {schedule}
       </section>
     </main>
   );
