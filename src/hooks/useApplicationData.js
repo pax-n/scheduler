@@ -60,7 +60,6 @@ export default function useApplicationData() {
         ...state.appointments[id],
         interview: null
       };
-
       const appointments = {
         ...state.appointments,
         [id]: nullAppointment

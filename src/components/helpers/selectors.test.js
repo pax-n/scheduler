@@ -5,12 +5,14 @@ const state = {
     {
       id: 1,
       name: "Monday",
-      appointments: [1, 2, 3]
+      appointments: [1, 2, 3],
+      interviewers: [2],
     },
     {
       id: 2,
       name: "Tuesday",
-      appointments: [4, 5]
+      appointments: [4, 5],
+      interviewers: [2],
     }
   ],
   appointments: {
@@ -28,7 +30,6 @@ const state = {
       interview: { student: "Chad Takahashi", interviewer: 2 }
     }
   },
-
   interviewers: {
     "1": {  
       "id": 1,
@@ -42,7 +43,6 @@ const state = {
     }
   }
 };
-
 
 test("getAppointmentsForDay returns an array", () => {
   const result = getAppointmentsForDay(state, "Monday");
