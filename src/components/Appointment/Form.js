@@ -17,16 +17,13 @@ export default function Form(props) {
     props.onCancel();
   };
 
-  const save = function () {
-    props.onSave(student, interviewer);
-  };
-
   const validate = function () {
     if (student === "") {
       setError("Student name cannot be blank");
       return;
     }
 
+    setError("");
     props.onSave(student, interviewer);
   };
 
@@ -57,7 +54,7 @@ export default function Form(props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={(save, validate)}>
+          <Button confirm onClick={validate}>
             Save
           </Button>
         </section>
