@@ -1,8 +1,6 @@
 import React from "react";
 import DayList from "./DayList";
-import { useState, useEffect } from "react";
 import Appointment from "components/Appointment";
-import axios from "axios";
 import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "components/helpers/selectors";
 import useApplicationData from "hooks/useApplicationData"
 
@@ -53,7 +51,10 @@ export default function Application(props) {
           alt="Lighthouse Labs"
         />
       </section>
-      <section className="schedule">{schedule}</section>
+      <section className="schedule">
+        {schedule}
+        <Appointment key="last" time="5pm"/>
+      </section>
     </main>
   );
 }

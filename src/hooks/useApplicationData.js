@@ -27,6 +27,14 @@ export default function useApplicationData() {
     });
   }, []);
 
+  function updateSpots() {
+    axios.get('/api/days/')
+      .then((response) => {
+        setState((prev) => (
+          {...prev, days: response.data}
+      ))
+    })
+  }
 
   function bookInterview(id, interview) {
     const appointment = {
@@ -42,10 +50,12 @@ export default function useApplicationData() {
       ...state,
       appointments
     }))
+    .then(() => updateSpots());
   }
 
   function cancelInterview(id) {
-    return axios.delete(`/api/appointments/${id}`).then(() => {
+    return axios.delete(`/api/appointments/${id}`)
+    .then(() => {
       const nullAppointment = {
         ...state.appointments[id],
         interview: null
@@ -56,8 +66,9 @@ export default function useApplicationData() {
         [id]: nullAppointment
       };
     })
+    .then(() => updateSpots());
   }
-  
+
   return {
     state,
     setDay,
