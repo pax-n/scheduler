@@ -2,7 +2,6 @@ import axios from "axios";
 const { useState, useEffect } = require("react");
 
 export default function useApplicationData() {
-
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -27,51 +26,52 @@ export default function useApplicationData() {
     });
   }, []);
 
-  function updateSpots() {
-    axios.get('/api/days/')
-      .then((response) => {
-        setState((prev) => (
-          {...prev, days: response.data}
-      ))
-    })
-  }
+  const updateSpots = function () {
+    axios.get("/api/days/").then((response) => {
+      setState((prev) => ({ ...prev, days: response.data }));
+    });
+  };
 
-  function bookInterview(id, interview) {
+  const bookInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview }
+      interview: { ...interview },
     };
     const appointments = {
       ...state.appointments,
-      [id]: appointment
+      [id]: appointment,
     };
-    return axios.put(`/api/appointments/${id}`, {interview})
-    .then(() => setState({
-      ...state,
-      appointments
-    }))
-    .then(() => updateSpots());
-  }
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then(() =>
+        setState({
+          ...state,
+          appointments,
+        })
+      )
+      .then(() => updateSpots());
+  };
 
-  function cancelInterview(id) {
-    return axios.delete(`/api/appointments/${id}`)
-    .then(() => {
-      const nullAppointment = {
-        ...state.appointments[id],
-        interview: null
-      };
-      const appointments = {
-        ...state.appointments,
-        [id]: nullAppointment
-      };
-    })
-    .then(() => updateSpots());
-  }
+  const cancelInterview = function (id) {
+    return axios
+      .delete(`/api/appointments/${id}`)
+      .then(() => {
+        const nullAppointment = {
+          ...state.appointments[id],
+          interview: null,
+        };
+        const appointments = {
+          ...state.appointments,
+          [id]: nullAppointment,
+        };
+      })
+      .then(() => updateSpots());
+  };
 
   return {
     state,
     setDay,
     bookInterview,
     cancelInterview,
-  }
+  };
 }
