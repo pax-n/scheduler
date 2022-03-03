@@ -15,7 +15,7 @@ Interview Scheduler is a Single Page Application (SPA) that tracks and books int
 
 ## Demo
 
-![demo-desktop-gif](https://raw.githubusercontent.com/pax-n/lighthouse-labs-scheduler/public/images/demo.gif)
+![demo-desktop-gif](https://github.com/pax-n/scheduler/blob/master/public/images/demo.gif)
 
 ## Setup
 
