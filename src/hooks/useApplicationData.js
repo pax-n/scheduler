@@ -26,7 +26,7 @@ export default function useApplicationData() {
     });
   }, []);
 
-  function bookInterview(id, interview) {
+  const bookInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
     };
@@ -51,9 +51,9 @@ export default function useApplicationData() {
         days,
       });
     });
-  }
+  };
 
-  function cancelInterview(id, interview) {
+  const cancelInterview = function (id, interview) {
     return axios.delete(`/api/appointments/${id}`).then(() => {
       console.log("Cancelled Appointment");
       const appointment = {
@@ -72,7 +72,7 @@ export default function useApplicationData() {
         days,
       });
     });
-  }
+  };
 
   const updateSpots = function (requestType) {
     const days = state.days.map((day) => {
